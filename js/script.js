@@ -1,3 +1,10 @@
+const toggleSpinner = (display) => {
+    const spinnerDiv = document.getElementById('spinner');
+    spinnerDiv.style.display = display;
+
+}
+toggleSpinner('none');
+
 document.getElementById('search-button').addEventListener('click', function () {
     const searchBox = document.getElementById('search-box');
     searchValue = searchBox.value;
@@ -5,7 +12,9 @@ document.getElementById('search-button').addEventListener('click', function () {
     getResult(searchValue);
 });
 
+
 const getResult = async (searchValue) => {
+    toggleSpinner('block');
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchValue}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -22,6 +31,8 @@ const getSingleResult = async (slug) => {
 
 const displayResult = data => {
     const searchResults = document.getElementById('search-results');
+    const detailsModal = document.getElementById('detials-section');
+    searchResults.innerHTML = '';
     data.data.forEach(async (element) => {
         const singleData = await getSingleResult(element.slug);
         const div = document.createElement('div');
@@ -55,4 +66,5 @@ const displayResult = data => {
         div.innerHTML = searchResult;
         searchResults.appendChild(div);
     });
+    toggleSpinner('none');
 }
