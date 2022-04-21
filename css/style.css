@@ -1,0 +1,33 @@
+.form {
+    position: relative;
+}
+
+.form .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #9ca3af
+}
+
+.form span {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 0px;
+    border-left: 1px solid #d1d5db
+}
+
+.form button{
+    padding: 15px 40px;
+}
+
+.form-input {
+    height: 55px;
+    text-indent: 33px;
+    border-radius: 10px;
+}
+
+.form-input:focus {
+    box-shadow: none;
+    border: none
+}
