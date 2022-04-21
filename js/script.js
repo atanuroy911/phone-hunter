@@ -3,7 +3,14 @@ const toggleSpinner = (display) => {
     spinnerDiv.style.display = display;
 
 }
+const toggleNoResult = (display) => {
+    const spinner = document.getElementById('no-result');
+    spinner.style.display = display;
+}
+
 toggleSpinner('none');
+toggleNoResult('none');
+
 
 document.getElementById('search-button').addEventListener('click', function () {
     const searchBox = document.getElementById('search-box');
@@ -29,25 +36,33 @@ const getSingleResult = async (slug) => {
     return data;
 }
 
+
+
 const displayResult = data => {
     const searchResults = document.getElementById('search-results');
     const detailsModal = document.getElementById('details-section');
     searchResults.innerHTML = '';
     const newData = data.data.slice(0, 20);
-    newData.forEach(async (element) => {
-        const singleData = await getSingleResult(element.slug);
-        const div = document.createElement('div');
-        const modalDiv = document.createElement('div');
-        div.classList.add('col');
-        let releaseDate;
-        if (!singleData.data.releaseDate || singleData.data.releaseDate == '') {
-            releaseDate = 'No Release Date Availbale';
-        }
-        else {
-            releaseDate = singleData.data.releaseDate;
-        }
+    if (!data.status) {
+        toggleNoResult('block');
+        toggleSpinner('none');
+    }
+    else {
+        toggleNoResult('none');
+        newData.forEach(async (element) => {
+            const singleData = await getSingleResult(element.slug);
+            const div = document.createElement('div');
+            const modalDiv = document.createElement('div');
+            div.classList.add('col');
+            let releaseDate;
+            if (!singleData.data.releaseDate || singleData.data.releaseDate == '') {
+                releaseDate = 'No Release Date Availbale';
+            }
+            else {
+                releaseDate = singleData.data.releaseDate;
+            }
 
-        const searchResult = `
+            const searchResult = `
                     <div class="card h-100">
                         <img src="${element.image}"
                             class="card-img-top w-50 mx-auto py-3" alt="...">
@@ -71,7 +86,7 @@ const displayResult = data => {
                         
                     </div>
         `;
-        const modals = `
+            const modals = `
                 <div class="modal fade" id="${element.slug}" tabindex="-1" aria-labelledby="${element.slug}Label"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -154,10 +169,11 @@ const displayResult = data => {
                 </div>
             </div>
         `;
-        div.innerHTML = searchResult;
-        modalDiv.innerHTML = modals;
-        searchResults.appendChild(div);
-        detailsModal.appendChild(modalDiv);
-    });
+            div.innerHTML = searchResult;
+            modalDiv.innerHTML = modals;
+            searchResults.appendChild(div);
+            detailsModal.appendChild(modalDiv);
+        });
+    }
     toggleSpinner('none');
 }
