@@ -33,7 +33,8 @@ const displayResult = data => {
     const searchResults = document.getElementById('search-results');
     const detailsModal = document.getElementById('details-section');
     searchResults.innerHTML = '';
-    data.data.forEach(async (element) => {
+    const newData = data.data.slice(0, 20);
+    newData.forEach(async (element) => {
         const singleData = await getSingleResult(element.slug);
         const div = document.createElement('div');
         const modalDiv = document.createElement('div');
